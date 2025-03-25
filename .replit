@@ -1,4 +1,4 @@
-entrypoint = "main.py"
+entrypoint = "proto.py"
 
 [unitTest]
 language = "python3"
@@ -7,5 +7,5 @@ language = "python3"
 requiredFiles = [".replit"]
 
 [deployment]
-run = ["python3", "main.py"]
+run = ["python3", "proto.py"]
 deploymentTarget = "cloudrun"

@@ -18,31 +18,6 @@ def create_pixel_name(color, location):
     pixel_name = f"{color_str}__{location_str}"
     return pixel_name
 
-def get_pixel_data(num_pixels):
-    pixels = []
-    for i in range(num_pixels):
-        while True:
-            try:
-                color = tuple(map(int, input(f"Enter the RGB values for pixel {i+1} (e.g., 255 0 0): ").split()))
-                if len(color) != 3:
-                    raise ValueError("Please enter exactly three integers for RGB values.")
-                break
-            except ValueError as e:
-                print(e)
-        
-        while True:
-            try:
-                location = tuple(map(int, input(f"Enter the location for pixel {i+1} (e.g., 0 0): ").split()))
-                if len(location) != 2:
-                    raise ValueError("Please enter exactly two integers for location.")
-                break
-            except ValueError as e:
-                print(e)
-        
-        pixel_name = create_pixel_name(color, location)
-        pixels.append(pixel_name)
-    return pixels
-
 def store_definition(pixel_data, definition, password):
     if password != PASSWORD:
         return {"error": "Invalid password"}
@@ -104,4 +79,4 @@ def get_definitions():
     return jsonify(definitions)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

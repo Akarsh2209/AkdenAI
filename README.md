@@ -1,2 +1,0 @@
-# AkdenAI
-Image Recognition Website

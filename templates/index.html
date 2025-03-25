@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picture Definition Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .button-group button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button-group button:hover {
+            background-color: #45a049;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #b5d3d09d;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            background-color: #4c84af;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        #definitions {
+            margin-top: 20px;
+        }
+        #definitions img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Picture Definition Interface</h1>
+        <div class="button-group">
+            <button onclick="showUploadForm()">Upload Picture</button>
+            <button onclick="showViewForm()">View Definitions</button>
+        </div>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" style="display:none;">
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required><br>
+            <label for="definition">Definition:</label>
+            <input type="text" id="definition" name="definition" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit">Submit</button>
+        </form>
+        <form id="viewForm" style="display:none;">
+            <label for="viewPassword">Password:</label>
+            <input type="password" id="viewPassword" name="password" required><br>
+            <button type="submit">View Definitions</button>
+        </form>
+        <div id="definitions"></div>
+    </div>
+    <script>
+        function showUploadForm() {
+            document.getElementById('uploadForm').style.display = 'block';
+            document.getElementById('viewForm').style.display = 'none';
+        }
+        function showViewForm() {
+            document.getElementById('uploadForm').style.display = 'none';
+            document.getElementById('viewForm').style.display = 'block';
+        }
+        document.getElementById('viewForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const password = document.getElementById('viewPassword').value;
+            fetch(`/definitions?password=${password}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const definitionsDiv = document.getElementById('definitions');
+                    definitionsDiv.innerHTML = '';
+                    for (const [filename, definition] of Object.entries(data)) {
+                        const p = document.createElement('p');
+                        const img = document.createElement('img');
+                        img.src = `/uploads/${filename}`;
+                        img.alt = filename;
+                        img.width = 100;
+                        p.textContent = `${filename}: ${definition}`;
+                        definitionsDiv.appendChild(img);
+                        definitionsDiv.appendChild(p);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

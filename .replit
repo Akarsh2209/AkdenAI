@@ -1,0 +1,11 @@
+entrypoint = "main.py"
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit"]
+
+[deployment]
+run = ["python3", "main.py"]
+deploymentTarget = "cloudrun"

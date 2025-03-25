@@ -1,6 +1,8 @@
 import os
 import json
 from flask import Flask, request, render_template, redirect, url_for, jsonify
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__)
